@@ -60,7 +60,7 @@ class PostController extends Controller
         }
 
         // image Croped
-        $img = Image::make('$image')->resize(600, null, function ($constraint) {
+        $img = Image::make($image->getRealPath())->resize(752, null, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         })->stream();
@@ -88,7 +88,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $post = Post::findOrFail($id);
+        return view('admin.post.show', compact('post'));
     }
 
     /**
@@ -99,7 +101,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $categories = Category::all();
+        return view('admin.post.edit', compact('post', 'categories'));
     }
 
     /**
@@ -111,7 +115,50 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:255|unique:posts',
+            'image' => 'sometimes|mimes:jpg,png,bmp,jpeg|max:5000',
+            'category' => 'required',
+            'tags' => 'required',
+            'body' => 'required',
+        ]);
+        $post = Post::findOrFail($id);
+        $slug = Str::slug($request->title, '-');
+        if (isset($request->image)) {
+            $image = $request->image;
+            $imageName = $slug . '-' . uniqid() . Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
+
+            if (!Storage::disk('public')->exists('post')) {
+                Storage::disk('public')->makeDirectory('post');
+            }
+
+            if (Storage::disk('public')->exists('post/' . $post->image)) {
+                Storage::disk('public')->delete('post/' . $post->image);
+            }
+
+            $postImage = Image::make($image->getRealPath())->resize(752, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->stream();
+
+            Storage::disk('public')->put('post/' . $imageName, $postImage);
+        } else {
+            $request->image = $post->image;
+        }
+        $post->user_id = Auth::id();
+        $post->title = $request->title;
+        $post->category_id = $request->category;
+        $post->slug = $slug;
+        $post->image = $imageName;
+        $post->body = $request->body;
+        if (isset($request->status)) {
+            $post->status = true;
+        } else {
+            $post->status = false;
+        }
+        $post->save();
+
+        return redirect()->route('admin.post.index');
     }
 
     /**
@@ -122,6 +169,12 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        if (Storage::disk('public')->exists('post/' . $post->image)) {
+            Storage::disk('public')->delete('post/' . $post->image);
+        }
+        $post->delete();
+
+        return redirect()->route('admin.post.index');
     }
 }

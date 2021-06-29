@@ -12,7 +12,7 @@
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1>Create</h1>
+                    <h1>Edit</h1>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
                         <li><a href="#">Dashboard</a></li>
-                        <li><a href="#" class="active">Create Post</a></li>
+                        <li><a href="#" class="active">Edit Post</a></li>
                     </ol>
                 </div>
             </div>
@@ -45,18 +45,20 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        
+
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data"
-                            class="form-horizontal">
+                        <form action="{{ route('admin.post.update', $post->id) }}" method="POST"
+                            enctype="multipart/form-data" class="form-horizontal">
                             @csrf
+                            @method('PUT')
                             {{-- title --}}
                             <div class="row form-group">
                                 <div class="col col-md-3"><label for="title" class=" form-control-label">Title</label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <input type="text" id="title" name="title" placeholder="Title" class="form-control">
+                                    <input type="text" id="title" name="title" placeholder="Title" class="form-control"
+                                        value="{{ $post->title }}">
                                 </div>
                             </div>
                             {{-- categories --}}
@@ -66,7 +68,9 @@
                                 <div class="col-12 col-md-9">
                                     <select name="category" id="select" class="form-control">
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}"
+                                                {{ $post->category->id == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -77,7 +81,7 @@
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input type="text" id="tag" name="tags" placeholder="Tag(Separated by ,)"
-                                        class="form-control">
+                                        class="form-control" value="tag">
                                 </div>
                             </div>
                             {{-- status --}}
@@ -88,7 +92,8 @@
                                         <div class="checkbox">
                                             <label for="checkbox1" class="form-check-label ">
                                                 <input type="checkbox" id="checkbox1" name="status" value="1"
-                                                    class="form-check-input">Published
+                                                    class="form-check-input"
+                                                    {{ $post->status == 1 ? 'checked' : '' }}>Published
                                             </label>
                                         </div>
                                     </div>
@@ -106,7 +111,7 @@
                                 <div class="col col-md-3"><label for="body" class=" form-control-label">Content</label>
                                 </div>
                                 <div class="col-12 col-md-9"><textarea name="body" id="summernote" rows="9"
-                                        placeholder="Content..." class="form-control"></textarea></div>
+                                        placeholder="Content..." class="form-control">{{ $post->body }}</textarea></div>
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 <i class="fa fa-dot-circle-o"></i> Submit

@@ -45,7 +45,7 @@
                     <div class="card">
                         <div class="card-header">
                             <strong class="card-title">Post Table</strong>
-                            <a href="{{ route('admin.post.create') }}" class="btn btn-primary"><i
+                            <a href="{{ route('admin.post.create') }}" class="btn btn-primary float-right"><i
                                     class="fa fa-plus"></i></a>
                         </div>
                         <div class="card-body">
@@ -53,9 +53,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>
-                                            <Title></Title>
-                                        </th>
+                                        <th>Title</th>
                                         <th>Slug</th>
                                         <th>Created_At</th>
                                         <th>Updated_At</th>
@@ -66,7 +64,7 @@
                                     @foreach ($posts as $key => $post)
                                         <tr>
                                             <th>{{ $key + 1 }}</th>
-                                            <th>{{ $post->name }}</th>
+                                            <th>{{ $post->title }}</th>
                                             <th>{{ $post->slug }}</th>
                                             <th>{{ $post->created_at }}</th>
                                             <th>{{ $post->updated_at }}</th>
@@ -75,10 +73,8 @@
                                                     <!-- Button trigger modal -->
                                                     <a href="{{ route('admin.post.show', $post->id) }}"
                                                         class="btn btn-info"><i class="fa fa-eye"></i></a>
-                                                    <a href="{{ route('admin.post.edit', $post->id) }}"
-                                                        class="btn btn-pencil"><i class="fa fa-eye"></i></a>
                                                     <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                        data-target="#deleteModal-{{ $category->id }}">
+                                                        data-target="#deleteModal-{{ $post->id }}">
                                                         <i class="fa fa-trash-o"></i>
                                                     </button>
                                                 </div>
@@ -115,7 +111,7 @@
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-primary btn-danger"
                                     onclick="event.preventDefault();
-                                                                                                        document.getElementById('deletepost-{{ $post->id }}').submit();">Confirm</button>
+                                                                                                            document.getElementById('deletepost-{{ $post->id }}').submit();">Confirm</button>
                                 <form action="{{ route('admin.post.destroy', $post->id) }}" method="POST"
                                     id="deletepost-{{ $post->id }}" style="display: none" enctype="multipart/form-data"
                                     class="form-horizontal">

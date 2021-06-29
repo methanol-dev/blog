@@ -21,7 +21,7 @@ class CreatePostsTable extends Migration
             $table->string('slug')->unique();
             $table->string('image')->default('default.jpg');
             $table->text('body');
-            $table->integer('viewcount');
+            $table->integer('viewcount')->default(0);
             $table->boolean('status')->default(0);
             $table->timestamps();
         });
