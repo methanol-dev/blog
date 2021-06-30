@@ -78,6 +78,12 @@ class PostController extends Controller
             $post->status = 1;
         }
         $post->save();
+        $tags = [];
+        $stringTags = array_map('trim', explode(',', $request->tags));
+        foreach ($stringTags as $tag) {
+            array_push($tags, ['name' => $tag]);
+        }
+        $post->tags()->createMany($tags);
         return redirect()->route('admin.post.index');
     }
     /**
@@ -115,13 +121,23 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'title' => 'required|max:255|unique:posts',
-            'image' => 'sometimes|mimes:jpg,png,bmp,jpeg|max:5000',
-            'category' => 'required',
-            'tags' => 'required',
-            'body' => 'required',
-        ]);
+        if ($request->title == Post::findOrFail($id)->title) {
+            $this->validate($request, [
+                'title' => 'required|max:255',
+                'image' => 'sometimes|mimes:jpg,png,bmp,jpeg|max:5000',
+                'category' => 'required',
+                'tags' => 'required',
+                'body' => 'required',
+            ]);
+        } else {
+            $this->validate($request, [
+                'title' => 'required|max:255|unique:posts',
+                'image' => 'sometimes|mimes:jpg,png,bmp,jpeg|max:5000',
+                'category' => 'required',
+                'tags' => 'required',
+                'body' => 'required',
+            ]);
+        }
         $post = Post::findOrFail($id);
         $slug = Str::slug($request->title, '-');
         if (isset($request->image)) {
@@ -143,7 +159,7 @@ class PostController extends Controller
 
             Storage::disk('public')->put('post/' . $imageName, $postImage);
         } else {
-            $request->image = $post->image;
+            $imageName = $post->image;
         }
         $post->user_id = Auth::id();
         $post->title = $request->title;
@@ -157,7 +173,14 @@ class PostController extends Controller
             $post->status = false;
         }
         $post->save();
-
+        //delete old tags
+        $post->tags()->delete();
+        $tags = [];
+        $stringTags = array_map('trim', explode(',', $request->tags));
+        foreach ($stringTags as $tag) {
+            array_push($tags, ['name' => $tag]);
+        }
+        $post->tags()->createMany($tags);
         return redirect()->route('admin.post.index');
     }
 
@@ -173,6 +196,7 @@ class PostController extends Controller
         if (Storage::disk('public')->exists('post/' . $post->image)) {
             Storage::disk('public')->delete('post/' . $post->image);
         }
+        $post->tags()->delete();
         $post->delete();
 
         return redirect()->route('admin.post.index');

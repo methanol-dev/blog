@@ -81,7 +81,8 @@
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <input type="text" id="tag" name="tags" placeholder="Tag(Separated by ,)"
-                                        class="form-control" value="tag">
+                                        class="form-control" value="@foreach ($post->tags as $key=>
+                                    $tag) {{ $key + 1 < count($post->tags) ? $tag->name. ',' : $tag->name }} @endforeach">
                                 </div>
                             </div>
                             {{-- status --}}
