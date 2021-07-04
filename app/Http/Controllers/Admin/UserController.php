@@ -8,6 +8,7 @@ use App\User;
 use App\Role;
 use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -18,6 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
+
         $users = User::all();
         $roles = Role::all();
         return view('admin.users.index', compact('users', 'roles'));
@@ -76,7 +78,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        if(Auth::user()->id == $id) {
+        if (Auth::user()->id == $id) {
             return redirect()->back();
         }
         $user->role_id = $request->role;
@@ -95,8 +97,11 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        if(Auth::user()->id == $id) {
+        if (Auth::user()->id == $id) {
             return redirect()->back();
+        }
+        if ($user->image !== 'default.jpg' && Storage::disk('public')->exists('user/' . $user->image)) {
+            Storage::disk('public')->delete('user/' . $user->image);
         }
         $user->delete();
         Toastr::warning('Deleted', 'title');

@@ -19,7 +19,7 @@
                         <a href="{{route('admin.user.index')}}"> <i class="menu-icon fa fa-user"></i> User </a>
                     </li>
                     <li class="active">
-                        <a href="{{route('admin.category.index')}}"> <i class="menu-icon fa fa-file"></i> Category </a>
+                        <a href="{{route('admin.category.index')}}"> <i class="menu-icon fa fa-list"></i> Category </a>
                     </li>
                     <li class="active">
                         <a href="{{route('admin.post.index')}}"> <i class="menu-icon fa fa-file"></i> Post </a>

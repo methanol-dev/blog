@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
+
 class PostController extends Controller
 {
     /**
@@ -20,7 +21,7 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
         $posts = Post::latest()->get();
         return view('admin.post.index', compact('posts'));
     }
