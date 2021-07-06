@@ -9,7 +9,7 @@
             <div class="row fullscreen">
                 <div class="banner-content d-flex align-items-center col-lg-12 col-md-12">
                     <h1>
-                        Welcome to myiotlab<br />
+                        Welcome to EvoLab<br />
                         <p>
                             L<span style="font-size: 0.7em">earn</span> &nbspC<span style="font-size: 0.7em">reate</span>
                             &nbspS<span style="font-size: 0.7em">hare</span>

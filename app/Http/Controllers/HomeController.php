@@ -27,9 +27,17 @@ class HomeController extends Controller
 
     public function posts()
     {
-        $categories = Category::all();
-        $posts = Post::latest()->take(10)->get();
+        $categories = Category::latest()->take(10)->get();
+        $posts = Post::latest()->paginate(4);
         return view('posts', compact('posts', 'categories'));
+    }
+
+    public function post($id)
+    {
+        $posts = Post::latest()->take(3)->get();
+        $post = Post::findOrFail($id);
+        $categories = Category::latest()->take(10)->get();
+        return view('post', compact('post', 'categories', 'posts'));
     }
 
     public function categories()
@@ -37,4 +45,6 @@ class HomeController extends Controller
         $categories = Category::latest()->take(4)->get();
         return view('categories', compact('categories'));
     }
+
+    
 }

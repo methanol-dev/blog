@@ -26,12 +26,22 @@ class DashboardController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'userid' => 'required|unique:users',
-            'about' => 'sometimes|max:255',
-            'image' => 'sometimes|image|mimes:jpg,png,bmp,jpeg|max:2000',
-        ]);
+        if ($request->userid == User::findOrFail(Auth::user()->id)->userid) {
+            $this->validate($request, [
+                'name' => 'required',
+                'userid' => 'required',
+                'about' => 'sometimes|max:255',
+                'image' => 'sometimes|image|mimes:jpg,png,bmp,jpeg|max:2000',
+            ]);
+        } else {
+            $this->validate($request, [
+                'name' => 'required',
+                'userid' => 'required|unique:users',
+                'about' => 'sometimes|max:255',
+                'image' => 'sometimes|image|mimes:jpg,png,bmp,jpeg|max:2000',
+            ]);
+        }
+
 
         $user = User::findOrFail(Auth::user()->id);
         if ($request->image != null) {

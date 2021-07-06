@@ -153,7 +153,7 @@ class PostController extends Controller
                 Storage::disk('public')->delete('post/' . $post->image);
             }
 
-            $postImage = Image::make($image->getRealPath())->resize(752, null, function ($constraint) {
+            $postImage = Image::make($image->getRealPath())->resize(752, 353, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->stream();

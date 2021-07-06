@@ -22,6 +22,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/posts', 'HomeController@posts')->name('posts');
+Route::get('/post/{id}', 'HomeController@post')->name('post');
 Route::get('/categories', 'HomeController@categories')->name('categories');
 
 // Admin
