@@ -18,4 +18,9 @@ class Post extends Model
     {
         return $this->hasMany('App\Tag', 'postID', 'id');
     }
+
+    public function scopeStatus($query)
+    {
+        return $query->where('status', 1);
+    }
 }

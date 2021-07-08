@@ -45,7 +45,7 @@
   </head>
   <body>
     <!-- Start Header Area -->
-    @include('layouts/frontend/partials/navbar')
+    @include('layouts.frontend.partials.navbar')
     <!-- End Header Area -->
     @yield('content')
     <!-- start footer Area -->

@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-lg-6 flex-row d-flex meta-right no-padding justify-content-end">
                         <div class="user-meta">
-                            <h4 class="text-white">Mark wiens</h4>
+                            <h4 class="text-white">Trịnh Xuân Thống</h4>
                             <p>12 Dec, 2017 11:21 am</p>
                         </div>
                         <img class="img-fluid user-img" src="img/user.jpg" alt="" />
@@ -49,9 +49,9 @@
             <div class="active-cat-carusel">
                 @foreach ($posts as $post)
                     <div class="item single-cat">
-                        <img src="{{ asset('storage/post/' . $post->image) }}" alt="{{ $post->image }}" />
+                        <img src="{{ asset('storage/post/' . $post->image) }}" alt="{{ $post->image }}" width="280px" height="157px"/>
                         <p class="date">{{ $post->created_at->diffForHumans() }}</p>
-                        <h4><a href="#">{{ $post->title }}</a></h4>
+                        <h4><a href="{{route('post', $post->slug)}}">{{ $post->title }}</a></h4>
                     </div>
                 @endforeach
             </div>
@@ -73,17 +73,14 @@
                 <div class="row justify-content-center">
                     @foreach ($posts as $post)
                         <div class="single-posts col-lg-4 col-sm-4 mb-3">
-                            <img src="{{ asset('storage/post/' . $post->image) }}" alt="{{ $post->image }}">
+                            <img src="{{ asset('storage/post/' . $post->image) }}" alt="{{ $post->image }}" width="280px" height="157px">
                             <div class="date mt-20 mb-20">{{ $post->created_at->diffForHumans() }}</div>
                             <div class="detail">
-                                <a href="http://localhost:8000/post/something">
+                                <a href="{{route('post', $post->slug)}}">
                                     <h4 class="pb-20">{{ $post->title }}</h4>
                                 </a>
                                 <p>
                                     {!! Str::limit($post->body, 400) !!}
-                                </p>
-                                <p class="footer">
-                                    <br>
                                 </p>
                                 <ul class="d-flex space-around">
                                     <li><a href="javascript:void(0);"
@@ -94,8 +91,6 @@
                                     <li><i class="fa fa-comment-o" aria-hidden="true"></i><span> 0</span></li>
                                     <li><i class="fa fa-eye" aria-hidden="true"></i> <span>0</span></li>
                                 </ul>
-
-                                <p></p>
                             </div>
                         </div>
                     @endforeach

@@ -1,6 +1,28 @@
 @extends('layouts.frontend.app')
 
 @section('content')
+    <!-- Start top-section Area -->
+    <section class="top-section-area section-gap">
+        <div class="container">
+            <div class="row justify-content-between align-items-center d-flex">
+                <div class="col-lg-8 top-left">
+                    <h1 class="text-white mb-20">All Post of Category {{ $category->name }}</h1>
+                    <ul>
+                        <li>
+                            <a href="index.html">Home</a><span class="lnr lnr-arrow-right"></span>
+                        </li>
+                        <li>
+                            <a href="category.html">Category</a><span class="lnr lnr-arrow-right"></span>
+                        </li>
+                        <li><a href="single.html">Posts</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End top-section Area -->
+
+    <!-- Start post Area -->
     <div class="post-wrapper pt-100">
         <!-- Start post Area -->
         <section class="post-area">
@@ -10,13 +32,13 @@
                         <div class="top-posts pt-50">
                             <div class="container">
                                 <div class="row justify-content-center">
-
                                     @if ($posts->count() > 0)
                                         @foreach ($posts as $post)
                                             <div class="single-posts col-lg-6 col-sm-6">
                                                 <img class="img-fluid" src="{{ asset('storage/post/' . $post->image) }}"
-                                                    alt="" />
-                                                <div class="date mt-20 mb-20">{{ $post->created_at->diffForHumans() }}
+                                                    alt="{{ $post->image }}" />
+                                                <div class="date mt-20 mb-20">
+                                                    {{ $post->created_at->format('D, d M Y H:i') }}
                                                 </div>
                                                 <div class="detail">
                                                     <a href="{{ route('post', $post->slug) }}">
@@ -25,7 +47,7 @@
                                                         </h4>
                                                     </a>
                                                     <p>
-                                                        {!! Str::limit($post->body, 400) !!}
+                                                        {!! Str::limit($post->body, 300) !!}
                                                     </p>
                                                     <p class="footer pt-20">
                                                         <i class="fa fa-heart-o" aria-hidden="true"></i>
@@ -39,9 +61,9 @@
                                     @else
                                         <h3>No post</h3>
                                     @endif
-                                </div>
-                                <div class="justify-content-center d-flex mt-5">
-                                    {{ $posts->links() }}
+                                    <div class="justify-content-center d-flex mb-3">
+                                        {{ $posts->links() }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -52,5 +74,6 @@
         </section>
         <!-- End post Area -->
     </div>
+    <!-- End post Area -->
 @endsection
 <!-- Start post Area -->
