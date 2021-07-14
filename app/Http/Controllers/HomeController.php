@@ -58,7 +58,9 @@ class HomeController extends Controller
     {
         $this->validate($request, ['search' => 'required|max:255']);
         $search = $request->search;
-        $posts = Post::where('title', 'like', "%$search%")->get();
-        return view('search', compact('posts'));
+        $posts = Post::where('title', 'like', "%$search%")->paginate(10);
+        $posts->appends(['search' => $search]);
+        $categories = Category::all();
+        return view('search', compact('posts', 'categories', 'search'));
     }
 }
