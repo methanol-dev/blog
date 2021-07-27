@@ -99,7 +99,7 @@
         </div><!-- .animated -->
         <div class="animated">
 
-            @foreach ($categories as $category)
+            
 
                 {{-- create category --}}
                 <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel"
@@ -151,6 +151,7 @@
                         </div>
                     </div>
                 </div>
+                @foreach ($categories as $category)
                 {{-- View category --}}
                 <div class="modal fade" id="viewModal-{{ $category->id }}" tabindex="-1" role="dialog"
                     aria-labelledby="mediumModalLabel" aria-hidden="true" data-backdrop="static">
